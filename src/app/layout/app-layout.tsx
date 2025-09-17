@@ -1,21 +1,29 @@
-import React from 'react';
-import Navbar from '@widgets/navbar/ui/navbar';
-import Footer from '@widgets/footer/ui/footer';
-import LeftRail from '@widgets/ad-rail/ui/left-rail';
-import RightRail from '@widgets/ad-rail/ui/right-rail';
+import type {ReactNode} from 'react';
 
-export default function AppLayout({children}: { children: React.ReactNode }) {
+/**
+ * AppLayout
+ *
+ * - 모든 페이지 공통 레이아웃
+ * - Header, Footer, Navbar 등을 이곳에 배치 가능
+ * - children 부분에 개별 페이지 내용이 렌더링됨
+ */
+export default function AppLayout({children}: { children: ReactNode }) {
   return (
-    <div className="bg-light min-vh-100 d-flex flex-column">
-      <Navbar/>
-      <main className="container-xxl flex-grow-1 py-3">
-        <div className="row g-3">
-          <aside className="col-lg-2 d-none d-lg-block"><LeftRail/></aside>
-          <section className="col-12 col-lg-8">{children}</section>
-          <aside className="col-xl-2 d-none d-xl-block"><RightRail/></aside>
-        </div>
+    <div className="app-layout">
+      {/* 예: 공통 헤더 */}
+      <header className="app-header">
+        <h1>My App</h1>
+      </header>
+
+      {/* 페이지 개별 콘텐츠 */}
+      <main className="app-content">
+        {children}
       </main>
-      <Footer/>
+
+      {/* 예: 공통 푸터 */}
+      <footer className="app-footer">
+        <p>© 2025 My App. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

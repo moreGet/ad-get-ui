@@ -5,9 +5,6 @@
       "@app/*": [
         "app/*"
       ],
-      "@pages/*": [
-        "pages/*"
-      ],
       "@widgets/*": [
         "widgets/*"
       ],
