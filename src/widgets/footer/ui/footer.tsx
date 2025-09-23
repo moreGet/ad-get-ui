@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-white border-top py-3">
+    <footer>
       <div className="container-xxl d-flex flex-wrap justify-content-between align-items-center gap-3">
         <small className="text-muted">
           © {new Date().getFullYear()} Chajaowa Homes. 공공데이터 기반.
