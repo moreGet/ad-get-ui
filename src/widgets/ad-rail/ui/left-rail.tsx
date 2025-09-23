@@ -1,6 +1,3 @@
 export default function LeftRail() {
-  return (
-    <div className="position-sticky" style={{ top: 84 }}>
-    </div>
-  );
+  return <div>왼쪽 광고 세로 광고 레일</div>;
 }

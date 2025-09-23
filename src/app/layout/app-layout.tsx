@@ -1,5 +1,10 @@
 import type {ReactNode} from 'react';
 
+import Navbar from '@widgets/navbar/ui/navbar'
+import Footer from '@widgets/footer/ui/footer'
+import LeftRail from '@widgets/ad-rail/ui/left-rail'
+import RightRail from '@widgets/ad-rail/ui/right-rail'
+
 /**
  * AppLayout
  *
@@ -9,20 +14,33 @@ import type {ReactNode} from 'react';
  */
 export default function AppLayout({children}: { children: ReactNode }) {
   return (
-    <div className="app-layout">
-      {/* 예: 공통 헤더 */}
-      <header className="app-header">
-        <h1>My App</h1>
+    <div className="app-layout d-flex flex-column min-vh-100">
+      <header className="app-navbar sticky-top bg-white border-bottom">
+        <div className="container-fluid">
+          <Navbar/>
+        </div>
       </header>
 
-      {/* 페이지 개별 콘텐츠 */}
-      <main className="app-content">
-        {children}
-      </main>
+      <div className="container-fluid flex-grow-1">
+        <div className="d-flex flex-row flex-nowrap gap-3 py-3">
+          <aside className="ad-rail-left flex-shrink-0">
+            <div className="rail-sticky"><LeftRail/></div>
+          </aside>
 
-      {/* 예: 공통 푸터 */}
-      <footer className="app-footer">
-        <p>© 2025 My App. All rights reserved.</p>
+          <main className="flex-grow-1 min-w-0 app-content">
+            {children}
+          </main>
+
+          <aside className="ad-rail-right flex-shrink-0">
+            <div className="rail-sticky"><RightRail/></div>
+          </aside>
+        </div>
+      </div>
+
+      <footer className="app-footer border-top bg-white">
+        <div className="container-fluid py-3">
+          <Footer/>
+        </div>
       </footer>
     </div>
   );

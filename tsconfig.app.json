@@ -10,6 +10,9 @@
       ],
       "@entities/*": [
         "entities/*"
+      ],
+      "@assets/*": [
+        "assets/*"
       ]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
