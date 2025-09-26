@@ -8,6 +8,14 @@
     width: 240px;
 }
 
+/* 992px 미만에서 레일 숨김 */
+@media (max-width: 991.98px) {
+    .ad-rail-left,
+    .ad-rail-right {
+        display: none !important;
+    }
+}
+
 /* 레일 폭 */
 
 .rail-sticky {
