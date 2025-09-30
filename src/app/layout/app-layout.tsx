@@ -1,18 +1,11 @@
-import type {ReactNode} from 'react';
+import {Suspense} from 'react';
+import {Outlet} from 'react-router-dom';
+import Navbar from '@widgets/navbar/ui/navbar';
+import Footer from '@widgets/footer/ui/footer';
+import LeftRail from '@widgets/ad-rail/ui/left-rail';
+import RightRail from '@widgets/ad-rail/ui/right-rail';
 
-import Navbar from '@widgets/navbar/ui/navbar'
-import Footer from '@widgets/footer/ui/footer'
-import LeftRail from '@widgets/ad-rail/ui/left-rail'
-import RightRail from '@widgets/ad-rail/ui/right-rail'
-
-/**
- * AppLayout
- *
- * - 모든 페이지 공통 레이아웃
- * - Header, Footer, Navbar 등을 이곳에 배치 가능
- * - children 부분에 개별 페이지 내용이 렌더링됨
- */
-export default function AppLayout({children}: { children: ReactNode }) {
+export default function AppLayout() {
   return (
     <div className="app-layout d-flex flex-column min-vh-100">
       <header className="app-navbar sticky-top bg-white border-bottom">
@@ -28,7 +21,10 @@ export default function AppLayout({children}: { children: ReactNode }) {
           </aside>
 
           <main className="flex-grow-1 min-w-0 app-content">
-            {children}
+            {/* 페이지 영역 */}
+            <Suspense fallback={<div className="container py-5">Loading…</div>}>
+              <Outlet/>
+            </Suspense>
           </main>
 
           <aside className="ad-rail-right flex-shrink-0">

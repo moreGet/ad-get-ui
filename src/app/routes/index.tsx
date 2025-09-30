@@ -1,51 +1,34 @@
-import {lazy, Suspense} from 'react';
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+// @app/routes/index.tsx
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppLayout from '@app/layout/app-layout';
-
-const HomePage = lazy(() => import('@app/routes/home-page'));
-const LungMedicineListPage = lazy(() => import('@app/routes/lung-medicine-list-page'));
-const NotFoundPage = lazy(() => import('@app/routes/not-found-page'));
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <AppLayout>
-        <Suspense fallback={<div className="container py-5">Loading…</div>}>
-          <HomePage/>
-        </Suspense>
-      </AppLayout>
-    ),
-    errorElement: (
-      <AppLayout>
-        <Suspense fallback={<div className="container py-5">Loading…</div>}>
-          <NotFoundPage/>
-        </Suspense>
-      </AppLayout>
-    ),
-  },
-  {
-    path: '/lung-medicine/list',
-    element: (
-      <AppLayout>
-        <Suspense fallback={<div className="container py-5">Loading…</div>}>
-          <LungMedicineListPage/>
-        </Suspense>
-      </AppLayout>
-    ),
-  },
-  {
-    path: '*',
-    element: (
-      <AppLayout>
-        <Suspense fallback={<div className="container py-5">Loading…</div>}>
-          <NotFoundPage/>
-        </Suspense>
-      </AppLayout>
-    ),
+    element: <AppLayout />,
+    // 에러를 레이아웃 안에서 보여주고 싶다면 이렇게:
+    errorElement: <AppLayout />,
+    children: [
+      {
+        index: true,
+        lazy: () => import('@app/routes/home-page').then(m => ({ Component: m.default })),
+      },
+      {
+        path: 'lung-medicine/list',
+        lazy: () => import('@app/routes/lung-medicine-list-page').then(m => ({ Component: m.default })),
+      },
+      {
+        path: 'lung-medicine/:id',
+        lazy: () => import('@app/routes/lung-medicine-detail-page').then(m => ({ Component: m.default })),
+      },
+      {
+        path: '*',
+        lazy: () => import('@app/routes/not-found-page').then(m => ({ Component: m.default })),
+      },
+    ],
   },
 ]);
 
 export default function AppRoutes() {
-  return <RouterProvider router={router}/>;
+  return <RouterProvider router={router} />;
 }

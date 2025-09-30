@@ -1,4 +1,4 @@
-export default function LungMedicinePage() {
+export default function LungMedicineDetailPage() {
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center pb-1 gap-4">
       <div className="text-muted">광고</div>

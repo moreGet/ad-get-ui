@@ -9,7 +9,7 @@
 }
 
 /* 992px 미만에서 레일 숨김 */
-@media (max-width: 991.98px) {
+@media (max-width: 900px) {
     .ad-rail-left,
     .ad-rail-right {
         display: none !important;
@@ -17,10 +17,22 @@
 }
 
 /* 레일 폭 */
-
 .rail-sticky {
     position: sticky;
     top: calc(var(--app-navbar-height) + 8px);
+}
+
+/* 기본(모바일) */
+.navbar .navbar-toggler { font-size: 1rem; } /* 16px 정도 */
+
+/* 더 작은 폰에서 살짝 키우기 */
+@media (max-width: 360px) {
+    .navbar .navbar-toggler { font-size: 1.0625rem; } /* 17px */
+}
+
+/* 태블릿 근처에서 조금 줄이기 */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .navbar .navbar-toggler { font-size: .9375rem; } /* 15px */
 }
 
 .app-content {

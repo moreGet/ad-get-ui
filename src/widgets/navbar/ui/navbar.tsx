@@ -2,13 +2,16 @@ import {Link, NavLink} from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <nav className="navbar navbar-expand-md bg-white border-bottom sticky-top">
       <div className="container-xxl">
         <Link className="navbar-brand fw-bold" to="/">열린데이터 마루</Link>
 
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#gnb"
-                aria-controls="gnb" aria-expanded="false" aria-label="메뉴 열기">
-          <span className="navbar-toggler-icon"/>
+        <button className="navbar-toggler px-3 py-2" type="button"
+                data-bs-toggle="collapse" data-bs-target="#gnb"
+                aria-controls="gnb" aria-expanded="false"
+                aria-label="메뉴 열기">
+          {/*<span className="navbar-toggler-icon"/>*/}
+          <span className="fw-semibold">메뉴</span>
         </button>
 
         <div id="gnb" className="collapse navbar-collapse">

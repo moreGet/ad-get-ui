@@ -1,3 +1,3 @@
 export default function LeftRail() {
-  return <div></div>;
+  return <div>왼쪽 광고</div>;
 }
