@@ -1,36 +1,50 @@
 // src/app/routes/lung-medicine-list-page.tsx
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import {Link, useSearchParams} from 'react-router-dom';
 import {fetchLungMedicines} from '@entities/listing/api/lung-medicine';
 import type {LungMedicineListResponse} from '@entities/listing/model/types';
+import Pagination from '@shared/ui/pagination';
 
 const PAGE_SIZE = 9;
 
 export default function LungMedicineListPage() {
   const [sp, setSp] = useSearchParams();
-  const page = Math.max(0, Number(sp.get('page') ?? '0'));
+
+  // page 안전 파싱
+  const page = useMemo(() => {
+    const raw = sp.get('page');
+    const n = Number(raw);
+    if (!raw || Number.isNaN(n) || n < 0) return 0;
+    return Math.floor(n);
+  }, [sp]);
 
   const [data, setData] = useState<LungMedicineListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
+  const topRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    let abort = false;
+    const ac = new AbortController();
+
     setLoading(true);
     setErr(null);
-    fetchLungMedicines(page, PAGE_SIZE)
-      .then(res => {
-        if (!abort) setData(res);
-      })
+
+    // fetch 시그니처: (page, size, sorts, opts) 이므로 빈 sorts([]) 넣고 4번째에 signal
+    fetchLungMedicines(page, PAGE_SIZE, [], {signal: ac.signal})
+      .then(res => setData(res))
       .catch(e => {
-        if (!abort) setErr(e.message ?? '요청 실패');
+        if (ac.signal.aborted) return;
+        setErr(e?.message ?? '요청 실패');
       })
       .finally(() => {
-        if (!abort) setLoading(false);
+        if (!ac.signal.aborted) setLoading(false);
       });
-    return () => {
-      abort = true;
-    };
+
+    // UX: 페이지 전환 시 상단으로
+    topRef.current?.scrollIntoView({behavior: 'smooth', block: 'start'});
+
+    return () => ac.abort();
   }, [page]);
 
   const go = (p: number) => {
@@ -38,11 +52,13 @@ export default function LungMedicineListPage() {
     if (p < 0 || p >= data.pageInfo.totalPages) return;
     const next = new URLSearchParams(sp);
     next.set('page', String(p));
-    setSp(next);
+    // 히스토리 오염 방지
+    setSp(next, {replace: true});
   };
 
   return (
     <div className="container-fluid overflow-hidden d-flex flex-column align-items-center gap-5">
+      <div ref={topRef} style={{position: 'absolute', inset: 0, width: 0, height: 0}} aria-hidden="true"/>
       <div className="text-muted text-center pt-3 w-100">광고</div>
 
       <div className="container mx-auto px-2" style={{maxWidth: 1680}}>
@@ -56,19 +72,9 @@ export default function LungMedicineListPage() {
                 <div key={item.id} className="col">
                   <div className="card h-100">
                     <div className="card-body text-start d-flex flex-column">
-                      {/* 제목 = installationPlaceName */}
-                      <h6 className="card-title fw-semibold mb-2">
-                        {item.installationPlaceName}
-                      </h6>
-
-                      {/* 설명 = roadAddress */}
-                      <p className="card-text text-muted small mb-3">
-                        {item.roadAddress}
-                      </p>
-
-                      <Link to={`/lung-medicine/${item.id}`} className="btn btn-primary mt-auto">
-                        상세
-                      </Link>
+                      <h6 className="card-title fw-semibold mb-2">{item.installationPlaceName}</h6>
+                      <p className="card-text text-muted small mb-3">{item.roadAddress}</p>
+                      <Link to={`/lung-medicine/${item.id}`} className="btn btn-primary mt-auto">상세</Link>
                     </div>
                   </div>
                 </div>
@@ -79,30 +85,21 @@ export default function LungMedicineListPage() {
                 </div>
               )}
             </div>
-
-            {/* 페이지네이션 (필요 시) */}
-            {data.pageInfo.totalPages > 1 && (
-              <nav className="d-flex justify-content-center mt-3">
-                <ul className="pagination">
-                  <li className={`page-item ${data.pageInfo.isFirst ? 'disabled' : ''}`}>
-                    <button className="page-link" onClick={() => go(page - 1)}>이전</button>
-                  </li>
-                  {Array.from({length: data.pageInfo.totalPages}, (_, i) => (
-                    <li key={i} className={`page-item ${i === page ? 'active' : ''}`}>
-                      <button className="page-link" onClick={() => go(i)}>{i + 1}</button>
-                    </li>
-                  ))}
-                  <li className={`page-item ${data.pageInfo.isLast ? 'disabled' : ''}`}>
-                    <button className="page-link" onClick={() => go(page + 1)}>다음</button>
-                  </li>
-                </ul>
-              </nav>
-            )}
           </>
         )}
       </div>
 
       <div className="text-muted text-center w-100">광고</div>
+
+      {data && (
+        <Pagination
+          page={page}
+          totalPages={data.pageInfo.totalPages}
+          onChange={(p) => go(p)}     // 기존 go 재사용
+          siblingCount={1}
+          showEdges
+        />
+      )}
     </div>
   );
 }
