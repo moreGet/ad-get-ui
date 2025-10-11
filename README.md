@@ -80,4 +80,16 @@ useEffect(() => {
     // 예: removeEventListener, clearInterval, AbortController.abort()
   };
 }, [/* deps */]);
+
+//---
+
+// 참조 동일성 유지가 중요한 객체/배열을 리턴할 때(자식 컴포넌트 memo 최적화 등)
+useMemo(() => {
+  // 내용
+}, ['감지하고자 하는 변수 이름'])
 ```
+
+## import {Link, useParams} from "react-router-dom";
+
+- Link : 라우터 제어 함수
+- useParams 라우터에서 사용하는 변수제어

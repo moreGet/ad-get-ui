@@ -18,6 +18,8 @@ export function fetchLungMedicines(page = 0, size = 9, sorts: SortParam[] = [], 
 }
 
 // 상세
-export function fetchLungMedicine(id: number) {
-  return api.get<LungMedicineDetail>(`/api/lung-medicine/${id}`);
+export function fetchLungMedicine(id: number, opts?: { signal?: AbortSignal }) {
+  return api.get<LungMedicineDetail>(`/api/lung-medicine/${id}`, {
+    signal: opts?.signal,
+  });
 }

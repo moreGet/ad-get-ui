@@ -15,11 +15,12 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     headers: {'Content-Type': 'application/json', ...(init?.headers ?? {})},
     ...init,
   });
+
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`[${res.status}] ${res.statusText} ${text}`);
+    throw new Error();
   }
-  return res.json() as Promise<T>;
+
+  return await res.json() as Promise<T>;
 }
 
 export const api = {get: request};
