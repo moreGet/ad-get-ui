@@ -1,6 +1,6 @@
 export type SortParam = { by: string; desc: boolean };
 
-export function buildPageQuery(page = 0, size = 10, sorts: SortParam[] = []) {
+export function buildPageQuery(page = 1, size = 9, sorts: SortParam[] = []) {
   const sp = new URLSearchParams();
   sp.set('currentPage', String(page));
   sp.set('pageSize', String(size));

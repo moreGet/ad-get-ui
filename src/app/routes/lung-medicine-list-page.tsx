@@ -1,13 +1,18 @@
 // src/app/routes/lung-medicine-list-page.tsx
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Link, useSearchParams} from 'react-router-dom';
 import {fetchLungMedicines} from '@entities/listing/api/lung-medicine';
 import type {LungMedicineListResponse} from '@entities/listing/model/types';
 import Pagination from '@shared/ui/pagination';
 
-const PAGE_SIZE = 9;
+// 사용 환경 감지
+import {useMedia} from "@shared/hooks/use-media.ts";
+import { DEFAULT_PAGE_SIZE_DESKTOP, DEFAULT_PAGE_SIZE_MOBILE } from "@shared/config/pagination";
 
 export default function LungMedicineListPage() {
+  const isMobile = useMedia("(max-width: 767.98px)");
+  const PAGE_SIZE = isMobile ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
+
   const [sp, setSp] = useSearchParams();
 
   // page 안전 파싱
@@ -47,14 +52,13 @@ export default function LungMedicineListPage() {
     return () => ac.abort();
   }, [page]);
 
-  const go = (p: number) => {
+  const go = useCallback((p: number) => {
     if (!data) return;
     if (p < 0 || p >= data.pageInfo.totalPages) return;
     const next = new URLSearchParams(sp);
     next.set('page', String(p));
-    // 히스토리 오염 방지
     setSp(next, {replace: true});
-  };
+  }, [data, sp, setSp]);
 
   return (
     <div className="container-fluid overflow-hidden d-flex flex-column align-items-center gap-5">
@@ -65,32 +69,47 @@ export default function LungMedicineListPage() {
         {loading && <div className="py-5 text-center">Loading…</div>}
         {err && <div className="alert alert-danger">{err}</div>}
 
-        {data && (
-          <>
-            <div className="row g-2 row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-6">
-              {data.contents.map(item => (
-                <div key={item.id} className="col">
-                  <div className="card h-100">
-                    <div className="card-body text-start d-flex flex-column">
-                      <h6 className="card-title fw-semibold mb-2">{item.installationPlaceName}</h6>
-                      <p className="card-text text-muted small mb-3">{item.roadAddress}</p>
-                      <Link to={`/lung-medicine/${item.id}`} className="btn btn-primary mt-auto">상세</Link>
-                    </div>
+        {/*
+          논리 AND(단락 평가) 를 이용한 조건 렌더링 패턴
+          data가 truthy 여야 다음으로 진행 (null/undefined면 중단)
+        */}
+        {!loading && data && (
+          // <> React Fragment. DOM에 실제 태그를 추가하지 않고 여러 요소를 묶기 위한 문법
+          <div className="row g-2 row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-6">
+            {data.contents.map(item => (
+              <div key={item.id} className="col">
+                <div className="card h-100">
+                  <div className="card-body text-start d-flex flex-column">
+                    <h6 className="card-title fw-semibold mb-2">{item.installationPlaceName}</h6>
+                    <p className="card-text text-muted small mb-3">{item.roadAddress}</p>
+                    <Link to={`/lung-medicine/${item.id}`} className="btn btn-primary mt-auto">상세</Link>
                   </div>
                 </div>
-              ))}
-              {data.contents.length === 0 && (
-                <div className="col-12">
-                  <div className="text-center text-muted py-5">데이터가 없습니다.</div>
-                </div>
-              )}
-            </div>
-          </>
+              </div>
+            ))}
+            {data.contents.length === 0 && (
+              <div className="col-12">
+                <div className="text-center text-muted py-5">데이터가 없습니다.</div>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
       <div className="text-muted text-center w-100">광고</div>
 
+      {/*
+        [Pagination → ListPage 데이터 갱신 플로우]
+        클릭(번호/이전/다음/처음/끝)
+        → Pagination 내부 onClick → internal go(p)
+        → clamp & guard(next !== page)
+        → props.onChange(next)        // 부모에 전달
+        → (부모) ListPage.go(next) → setSp(?page=next)  // URL 쿼리 갱신
+        → page 값 변경
+        → useEffect([page]) 트리거 → fetchLungMedicines(page, ...)
+        → setLoading(true) → setData(res) → setLoading(false)
+        → 리렌더링 → 새 데이터와 함께 목록/페이지네이션 표시
+      */}
       {data && (
         <Pagination
           page={page}

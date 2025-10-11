@@ -43,6 +43,8 @@ function PaginationBase({
       const next = clamp(p, 0, Math.max(0, totalPages - 1));
       if (next !== page) onChange(next);
     },
+    // 아래 값들중 하나라도 바뀌면 go 재생성
+    // 해당 값들이 바뀌었는데 콜백을 재생성 하지 않으면 스에일 클로저(이전 값)을 재사용 할 수 있음.
     [onChange, page, totalPages]
   );
 

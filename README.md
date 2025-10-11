@@ -67,3 +67,17 @@ export default tseslint.config([
   },
 ])
 ```
+
+## useEffect
+
+```js
+useEffect(() => {
+  // 1) 이펙트(부수효과) 실행 지점
+  // 예: fetch, addEventListener, setInterval, console.log...
+
+  return () => {
+    // 2) cleanup (정리)
+    // 예: removeEventListener, clearInterval, AbortController.abort()
+  };
+}, [/* deps */]);
+```

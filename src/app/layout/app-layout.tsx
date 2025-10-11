@@ -15,7 +15,7 @@ export default function AppLayout() {
       </header>
 
       <div className="container-fluid flex-grow-1">
-        <div className="d-flex flex-row flex-nowrap gap-3 py-3">
+        <div className="d-flex flex-row flex-nowrap gap-0 py-3">
           <aside className="ad-rail-left flex-shrink-0">
             <div className="rail-sticky"><LeftRail/></div>
           </aside>
