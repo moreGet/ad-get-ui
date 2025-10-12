@@ -93,3 +93,8 @@
 .container-fluid > .d-flex.flex-nowrap {
     overflow-x: auto;
 }
+
+/* 라벨에 약간의 자간 */
+.label-xs {
+    letter-spacing: .03em;
+}
