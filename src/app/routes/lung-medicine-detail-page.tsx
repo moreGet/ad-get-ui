@@ -1,5 +1,5 @@
 // src/app/routes/lung-medicine-detail-page.tsx
-import React, {useMemo} from "react";
+import {useMemo} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import {useAsync} from "@shared/hooks/use-async";
 import {parseRouteInt} from "@shared/utils/parse-utils";
@@ -8,34 +8,10 @@ import type {LungMedicineDetail} from "@entities/listing/model/types";
 
 import AdSlot from "@shared/ui/ad-slot";
 import Breadcrumbs from "@shared/ui/breadcrumbs";
+import {SectionHeader, Field} from "@shared/ui/helpers";
 
-/** ─────────────────────────────────────────────────────────────
- * UI helpers (이 파일 내부에서만 사용)
- * 라벨/값 타이포 계층을 일관되게 적용하기 위한 작은 컴포넌트들
- * ──────────────────────────────────────────────────────────── */
-function SectionHeader({title}: { title: string }) {
-  return <h2 className="h5 fw-bold mb-3">{title}</h2>;
-}
-
-function Field({
-                 label,
-                 children,
-                 hint,
-               }: {
-  label: string;
-  children: React.ReactNode;
-  hint?: React.ReactNode;
-}) {
-  return (
-    <div className="mb-3">
-      <div className="text-uppercase text-body-secondary small fw-semibold" style={{letterSpacing: ".03em"}}>
-        {label}
-      </div>
-      <div className="fs-5 fw-semibold">{children}</div>
-      {hint && <div className="small text-body-secondary mt-1">{hint}</div>}
-    </div>
-  );
-}
+import NaverMap from "@shared/providers/naver/dynamic-map";
+import NaverPanorama from "@shared/providers/naver/panorama";
 
 export default function LungMedicineDetailPage() {
   const {id: routeId} = useParams();
@@ -44,18 +20,6 @@ export default function LungMedicineDetailPage() {
   const {data, loading, error} = useAsync<LungMedicineDetail>(
     (signal) => fetchLungMedicine(id, {signal}),
     {deps: [id], immediate: true}
-  );
-
-  const fmt = useMemo(
-    () =>
-      new Intl.DateTimeFormat(undefined, {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    []
   );
 
   // 로딩 종료 후 에러 혹은 데이터 없음 → 404
@@ -68,15 +32,12 @@ export default function LungMedicineDetailPage() {
     {label: loading ? "상세" : data?.installationPlaceName ?? "상세", active: true},
   ];
 
-  // 지오 좌표 가드
-  const hasGeo = Number.isFinite(data?.latitude) && Number.isFinite(data?.longitude);
-
   return (
     <div className="container py-3 d-flex flex-column gap-3">
       {/* ── 상단 네비게이터(빵크럼) + 큰 타이틀 ─────────────────────── */}
       <div className="w-100" style={{maxWidth: 960}}>
         <div className="card">
-          <div className="card-body">
+          <div className="card-body position-relative">
             <Breadcrumbs items={crumbs}/>
 
             {/* 페이지 타이틀 + 보조설명(주소) */}
@@ -152,6 +113,32 @@ export default function LungMedicineDetailPage() {
       {/* 광고 */}
       <AdSlot height={80}/>
 
+      {/* 네이버 다이나믹 지도 */}
+      {!loading && data && (
+        <div className="row g-3">
+          <div className="col-12 col-lg-6">
+            <div className="card h-100">
+              <div className="card-body">
+                <h2 className="h5 fw-bold mb-3">지도 위치</h2>
+                <NaverMap lat={data.latitude} lng={data.longitude} zoom={18} height={360}/>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-12 col-lg-6">
+            <div className="card h-100">
+              <div className="card-body">
+                <h2 className="h5 fw-bold mb-3">거리 뷰</h2>
+                <NaverPanorama lat={data.latitude} lng={data.longitude} height={360} pan={-135} tilt={29} fov={100}/>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 광고 */}
+      <AdSlot height={80}/>
+
       {/* 섹션: 관리기관/연락처 */}
       <div className="card">
         <div className="card-body">
@@ -195,43 +182,6 @@ export default function LungMedicineDetailPage() {
           )}
         </div>
       </div>
-
-      {/* 섹션: 메타 정보 */}
-      <div className="card">
-        <div className="card-body">
-          <SectionHeader title="메타 정보"/>
-
-          {loading && (
-            <div role="status" aria-live="polite">
-              Loading…
-            </div>
-          )}
-
-          {!loading && data && (
-            <div className="row row-cols-1 row-cols-md-3 g-3">
-              <div className="col">
-                <div className="text-uppercase text-body-secondary small fw-semibold" style={{letterSpacing: ".03em"}}>
-                  기준일
-                </div>
-                <div className="fw-semibold">{fmt.format(new Date(data.dataReferenceDate))}</div>
-              </div>
-              <div className="col">
-                <div className="text-uppercase text-body-secondary small fw-semibold" style={{letterSpacing: ".03em"}}>
-                  생성
-                </div>
-                <div className="fw-semibold">{fmt.format(new Date(data.createdAt))}</div>
-              </div>
-              <div className="col">
-                <div className="text-uppercase text-body-secondary small fw-semibold" style={{letterSpacing: ".03em"}}>
-                  수정
-                </div>
-                <div className="fw-semibold">{fmt.format(new Date(data.updatedAt))}</div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* 광고 */}
       <AdSlot height={80}/>
     </div>
