@@ -14,6 +14,8 @@ import {useScrollToTop} from "@shared/hooks/use-scroll-to-top";
 import {useResetPageOnChange} from "@shared/hooks/use-reset-page-on-change";
 import {usePaginationGo} from "@shared/hooks/use-pagination-go";
 
+import AdSlot from "@shared/ui/ad-slot";
+
 export default function LungMedicineListPage() {
   const isMobile = useMedia(BASE_PAGE_SIZE);
   const PAGE_SIZE = isMobile ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
@@ -40,7 +42,11 @@ export default function LungMedicineListPage() {
   return (
     <div className="container-fluid overflow-hidden d-flex flex-column align-items-center gap-5">
       <div ref={topRef} style={{position: "absolute", inset: 0, width: 0, height: 0}} aria-hidden="true"/>
-      <div className="text-muted text-center pt-3 w-100">광고</div>
+
+      {/* 광고 */}
+      <div className="container-fluid px-0">
+        <AdSlot height={80}/>
+      </div>
 
       <div className="container mx-auto px-2" style={{maxWidth: 1680}}>
         {loading && <div className="py-5 text-center">Loading…</div>}
@@ -70,7 +76,10 @@ export default function LungMedicineListPage() {
         )}
       </div>
 
-      <div className="text-muted text-center w-100">광고</div>
+      {/* 광고 */}
+      <div className="container-fluid px-0">
+        <AdSlot height={80}/>
+      </div>
 
       {data && (
         <Pagination
