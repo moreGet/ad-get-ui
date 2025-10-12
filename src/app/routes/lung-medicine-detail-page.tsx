@@ -1,5 +1,4 @@
 // src/app/routes/lung-medicine-detail-page.tsx
-import {useMemo} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import {useAsync} from "@shared/hooks/use-async";
 import {parseRouteInt} from "@shared/utils/parse-utils";
