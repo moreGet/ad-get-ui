@@ -1,12 +1,13 @@
 // @app/routes/index.tsx
-import {createBrowserRouter, RouterProvider, Link} from 'react-router-dom';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import AppLayout from '@app/layout/app-layout';
+
+import {TEXT, ROUTES} from "@shared/constants/text";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.home,
     element: <AppLayout/>,
-    handle: {breadcrumb: () => <Link to="/">홈</Link>},
     // 에러를 레이아웃 안에서 보여주고 싶다면 이렇게:
     errorElement: <AppLayout/>,
     children: [
@@ -15,12 +16,12 @@ const router = createBrowserRouter([
         lazy: () => import('@app/routes/home-page').then(m => ({Component: m.default})),
       },
       {
-        path: 'lung-medicine/list',
-        handle: {breadcrumb: () => "(폐)의약품 수거함"},
+        path: ROUTES.lungMedicineList,
+        handle: {breadcrumb: () => TEXT.lungMedicine.title},
         lazy: () => import('@app/routes/lung-medicine-list-page').then(m => ({Component: m.default})),
       },
       {
-        path: 'lung-medicine/:id',
+        path: ROUTES.lungMedicineDetail,
         lazy: () => import('@app/routes/lung-medicine-detail-page').then(m => ({Component: m.default})),
       },
       {

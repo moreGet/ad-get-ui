@@ -99,7 +99,7 @@ export default function LungMedicineListPage() {
   const go = usePaginationGo(data?.pageInfo.totalPages, setPage);
 
   return (
-    <div className="container-fluid overflow-hidden d-flex flex-column align-items-center gap-5">
+    <div className="container-fluid overflow-hidden vstack align-items-center gap-4">
       <div ref={topRef} style={{position: "absolute", inset: 0, width: 0, height: 0}} aria-hidden="true"/>
 
       {/* 광고 */}
