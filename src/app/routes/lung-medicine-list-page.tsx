@@ -15,81 +15,119 @@ import {useResetPageOnChange} from "@shared/hooks/use-reset-page-on-change";
 import {usePaginationGo} from "@shared/hooks/use-pagination-go";
 
 import AdSlot from "@shared/ui/ad-slot";
+import {getDefaultSearchFields, type SearchFieldOf} from "@shared/api/common-code/static";
+
+type SearchField = SearchFieldOf<"lung-medicine">;
 
 export default function LungMedicineListPage() {
   const isMobile = useMedia(BASE_PAGE_SIZE);
   const PAGE_SIZE = isMobile ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
 
+  // 공통코드(하드코딩)에서 필드/라벨
+  const {fields, labels} = getDefaultSearchFields("lung-medicine");
+
   // page 쿼리 공통 훅
   const {value: page, setValue: setPage} = useIntQueryParam();
 
-  // --- 검색 상태: URL ?q= 유지 + 디바운스 ---
+  // URL 쿼리 상태: ?q=, ?f=
   const [searchParams, setSearchParams] = useSearchParams();
-  const qFromUrl = searchParams.get("q") ?? "";
+  const qFromUrl = (searchParams.get("q") ?? "").trim();
+  const fieldFromUrl = (searchParams.get("f") as SearchField) || (fields[0] as SearchField);
 
+  // 입력(타이핑/선택)
   const [input, setInput] = useState(qFromUrl);
-  useEffect(() => setInput(qFromUrl), [qFromUrl]);
+  const [fieldInput, setFieldInput] = useState<SearchField>(fieldFromUrl);
 
-  const [debouncedQ, setDebouncedQ] = useState(qFromUrl);
+  // 커밋(조회용)
+  const [query, setQuery] = useState(qFromUrl);
+  const [fieldQuery, setFieldQuery] = useState<SearchField>(fieldFromUrl);
+
+  // URL 동기화
   useEffect(() => {
-    const id = setTimeout(() => setDebouncedQ(input.trim()), 300);
-    return () => clearTimeout(id);
-  }, [input]);
+    setInput(qFromUrl);
+    setQuery(qFromUrl);
+  }, [qFromUrl]);
+  useEffect(() => {
+    setFieldInput(fieldFromUrl);
+    setFieldQuery(fieldFromUrl);
+  }, [fieldFromUrl]);
 
-  const applyQ = (next: string) => {
+  const applyToUrl = (nextQ: string, nextF: SearchField) => {
     const sp = new URLSearchParams(searchParams);
-    if (next && next.trim()) sp.set("q", next.trim());
-    else sp.delete("q");
+    if (nextQ && nextQ.trim()) sp.set("q", nextQ.trim()); else sp.delete("q");
+    if (nextF) sp.set("f", nextF); else sp.delete("f");
     setSearchParams(sp, {replace: true});
   };
 
   const onSubmitSearch: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    applyQ(input);
-    setPage(0); // 검색 제출 시 첫 페이지로
+    const nextQ = input.trim();
+    const nextF = fieldInput;
+    applyToUrl(nextQ, nextF);
+    setQuery(nextQ);
+    setFieldQuery(nextF);
+    setPage(0);
   };
 
   const onClear = () => {
     setInput("");
-    applyQ("");
+    applyToUrl("", fieldInput); // 필드 유지
+    setQuery("");
+    setFieldQuery(fieldInput);
     setPage(0);
   };
 
-  // 데이터 패칭 공통 훅 (q 전달)
+  // 버튼 눌렀을 때만 커밋 값으로 조회
   const {data, loading, error} = useAsync<LungMedicineListResponse>(
-    (signal) => fetchLungMedicines(page, PAGE_SIZE, [], {signal, q: debouncedQ}),
-    {deps: [page, PAGE_SIZE, debouncedQ]}
+    (signal) =>
+      fetchLungMedicines(page, PAGE_SIZE, [], {
+        signal,
+        q: query,
+        fields: query ? [fieldQuery] : undefined, // 검색어 없으면 전체 검색(기본 필드 사용)
+      }),
+    {deps: [page, PAGE_SIZE, query, fieldQuery]}
   );
 
-  // a) 페이지 바뀔 때 상단 스크롤 (공통 훅)
+  // UX 훅
   const topRef = useRef<HTMLDivElement | null>(null);
   useScrollToTop(topRef, [page]);
-
-  // b) pageSize 바뀌면 0페이지 리셋 (공통 훅)
   useResetPageOnChange(PAGE_SIZE, setPage);
-
-  // c) 검색어 변경 시 0페이지 리셋 (공통 훅)
-  useResetPageOnChange(debouncedQ, setPage);
-
-  // d) Pagination onChange 콜백 (공통 훅)
+  useResetPageOnChange(query, setPage);
+  useResetPageOnChange(fieldQuery, setPage);
   const go = usePaginationGo(data?.pageInfo.totalPages, setPage);
 
   return (
     <div className="container-fluid overflow-hidden d-flex flex-column align-items-center gap-5">
       <div ref={topRef} style={{position: "absolute", inset: 0, width: 0, height: 0}} aria-hidden="true"/>
 
+      {/* 광고 */}
+      <div className="container-fluid px-0">
+        <AdSlot height={80}/>
+      </div>
+
       {/* 검색바 */}
       <div className="container mx-auto px-2" style={{maxWidth: 1680}}>
         <form onSubmit={onSubmitSearch} className="w-100">
           <div className="input-group my-3">
+            <select
+              className="form-select"
+              value={fieldInput}
+              onChange={(e) => setFieldInput(e.target.value as SearchField)}
+              aria-label="검색 필드 선택"
+              style={{maxWidth: 150}}
+            >
+              {fields.map((f) => (
+                <option key={f} value={f}>
+                  {labels[f] ?? f}
+                </option>
+              ))}
+            </select>
+
             <input
-              className="form-control"
-              type="search"
-              placeholder="설치 장소명, 도로명주소로 검색"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              aria-label="폐의약품 수거함 검색"
+              className="form-control" type="search" placeholder="검색어를 입력하세요" value={input}
+              onChange={(e) => setInput(e.target.value)} aria-label="폐의약품 수거함 검색"
             />
+
             {input && (
               <button type="button" className="btn btn-outline-secondary" onClick={onClear}>
                 초기화
@@ -139,13 +177,7 @@ export default function LungMedicineListPage() {
       </div>
 
       {data && (
-        <Pagination
-          page={page}
-          totalPages={data.pageInfo.totalPages}
-          onChange={go}
-          siblingCount={1}
-          showEdges
-        />
+        <Pagination page={page} totalPages={data.pageInfo.totalPages} onChange={go} siblingCount={1} showEdges/>
       )}
     </div>
   );

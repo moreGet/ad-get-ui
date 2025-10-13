@@ -4,6 +4,7 @@ import Navbar from '@widgets/navbar/ui/navbar';
 import Footer from '@widgets/footer/ui/footer';
 import LeftRail from '@widgets/ad-rail/ui/left-rail';
 import RightRail from '@widgets/ad-rail/ui/right-rail';
+import {CommonCodeProvider} from "@shared/api/common-code/provider";
 
 export default function AppLayout() {
   return (
@@ -20,12 +21,14 @@ export default function AppLayout() {
             <div className="rail-sticky"><LeftRail/></div>
           </aside>
 
-          <main className="flex-grow-1 min-w-0 app-content">
-            {/* 페이지 영역 */}
-            <Suspense fallback={<div className="container py-5">Loading…</div>}>
-              <Outlet/>
-            </Suspense>
-          </main>
+          <CommonCodeProvider>
+            <main className="flex-grow-1 min-w-0 app-content">
+              {/* 페이지 영역 */}
+              <Suspense fallback={<div className="container py-5">Loading…</div>}>
+                <Outlet/>
+              </Suspense>
+            </main>
+          </CommonCodeProvider>
 
           <aside className="ad-rail-right flex-shrink-0">
             <div className="rail-sticky"><RightRail/></div>
