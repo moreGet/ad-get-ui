@@ -13,7 +13,10 @@ export const DEFAULT_COMMON_CODE = {
 } as const;
 
 export type CommonCodeData = typeof DEFAULT_COMMON_CODE;
+// CommonCodeData의 key값이 "lung-medicine" | "bar" | ... 형식으로 생김
 export type CommonCodeKey = keyof CommonCodeData; // "lung-medicine"
+// ["fields"][number] 는 런타임 인덱싱이 아니라 타입 수준의 의미 즉 “fields 배열의 원소 타입 전체의 유니온”을 뜻
+// 예: readonly ["installationPlaceName", "roadAddress"] 이면 ["fields"][number] → "installationPlaceName" | "roadAddress"
 export type SearchFieldOf<K extends CommonCodeKey> = CommonCodeData[K]["fields"][number];
 
 /**

@@ -24,6 +24,8 @@ export default function LungMedicineListPage() {
   const PAGE_SIZE = isMobile ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
 
   // 공통코드(하드코딩)에서 필드/라벨
+  // fields: readonly ["installationPlaceName", "roadAddress"]
+  // labels: { installationPlaceName: "설치 장소명", roadAddress: "도로명주소" }
   const {fields, labels} = getDefaultSearchFields("lung-medicine");
 
   // page 쿼리 공통 훅
