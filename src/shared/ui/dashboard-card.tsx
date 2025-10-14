@@ -17,7 +17,7 @@ export default function DashboardCard({
                                         imgAlt,
                                       }: DashboardCardProps) {
   return (
-    <div className="card h-100 shadow-sm position-relative">
+    <div className="card card-hover h-100 shadow-sm position-relative">
       <div className="card-body d-flex align-items-center gap-3">
         {/* 왼쪽 이미지 영역 */}
         {imgSrc ? (

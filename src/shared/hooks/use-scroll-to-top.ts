@@ -1,5 +1,5 @@
 // src/shared/hooks/use-scroll-to-top.ts
-import {useEffect, type DependencyList, type RefObject} from "react";
+import {type DependencyList, type RefObject, useEffect} from "react";
 
 type Opts = {
   behavior?: ScrollBehavior;

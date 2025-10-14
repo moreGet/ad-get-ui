@@ -1,4 +1,5 @@
-import {Link, NavLink} from 'react-router-dom';
+import {Link, NavLink} from "react-router-dom";
+import {ROUTES, TEXT} from "@shared/constants/text";
 
 export default function Navbar() {
   return (
@@ -6,24 +7,60 @@ export default function Navbar() {
       <div className="container-xxl">
         <Link className="navbar-brand fw-bold" to="/">열린데이터 마루</Link>
 
-        <button className="navbar-toggler px-3 py-2" type="button"
-                data-bs-toggle="collapse" data-bs-target="#gnb"
-                aria-controls="gnb" aria-expanded="false"
-                aria-label="메뉴 열기">
-          {/*<span className="navbar-toggler-icon"/>*/}
+        <button
+          className="navbar-toggler px-3 py-2"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#gnb"
+          aria-controls="gnb"
+          aria-expanded="false"
+          aria-label="메뉴 열기"
+        >
           <span className="fw-semibold">메뉴</span>
         </button>
 
         <div id="gnb" className="collapse navbar-collapse">
           <ul className="navbar-nav me-auto">
-            <li className="nav-item"><NavLink to="/" end className="nav-link">홈</NavLink></li>
-            <li className="nav-item"><NavLink to="/lung-medicine/list" className="nav-link">(폐)의약품 수거함</NavLink></li>
-            {/*<li className="nav-item"><a className="nav-link" href="#">실거래가</a></li>*/}
-          </ul>
+            {/* 홈: 그대로 */}
+            <li className="nav-item">
+              <NavLink to={ROUTES.home} end className="nav-link navlink-underline">홈</NavLink>
+            </li>
 
-          {/*<form className="d-none d-lg-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-            <input className="form-control" placeholder="지역/아파트 검색"/>
-          </form>*/}
+            {/* 약국/의료 드롭다운 */}
+            <li className="nav-item dropdown">
+              {/* 토글은 a/button 어떤 것이든 OK. 접근성 위해 button 사용 */}
+              <button
+                className="nav-link dropdown-toggle navlink-underline bg-transparent border-0"
+                id="navbarPharmacy"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                의료/약국
+              </button>
+
+              <ul className="dropdown-menu dropdown-animate border-1 rounded-4 p-2" aria-labelledby="navbarPharmacy">
+                <li>
+                  <NavLink
+                    to={ROUTES.lungMedicineList}
+                    className={({isActive}) =>
+                      `dropdown-item dd-item-hover rounded-3 ${isActive ? "active" : ""}`
+                    }
+                  >
+                    {TEXT.lungMedicine.title}
+                  </NavLink>
+                </li>
+
+                {/* 섹션 확장 여지 (예시)
+                <li><hr className="dropdown-divider my-2" /></li>
+                <li>
+                  <NavLink to="/pharmacy/map" className="dropdown-item dd-item-hover rounded-3">
+                    우리동네 약국 지도
+                  </NavLink>
+                </li>
+                */}
+              </ul>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>

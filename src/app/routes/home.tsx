@@ -1,10 +1,10 @@
-// src/app/routes/home-page.tsx
+// src/app/routes/home.tsx
 import DashboardCard from "@shared/ui/dashboard-card";
 import AdSlot from "@shared/ui/ad-slot";
-import {TEXT, ROUTES} from "@shared/constants/text";
+import {ROUTES, TEXT} from "@shared/constants/text";
 // import lungIcon from "@app/assets/react.svg"; // 샘플 아이콘(원하면 다른 이미지로 교체)
 
-export default function HomePage() {
+export default function Home() {
   return (
     <div className="container py-4">
       <div className="vstack gap-4"> {/* ← 섹션들 사이 간격 */}

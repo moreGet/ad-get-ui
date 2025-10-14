@@ -1,7 +1,7 @@
 // src/entities/listing/api/lung-medicine.ts
 import {api} from "@shared/api/common/client";
-import {buildPageQuery, appendSearchParams, type SortParam, type KeysValues} from "@shared/api/common/query";
-import type {LungMedicineListResponse, LungMedicineDetail} from "@entities/listing/model/types";
+import {appendSearchParams, buildPageQuery, type KeysValues, type SortParam} from "@shared/api/common/query";
+import type {LungMedicineDetail, LungMedicineListResponse} from "@entities/listing/model/types";
 import {getDefaultSearchFieldList} from "@shared/api/common-code/static.ts";
 
 type FetchOpts = {

@@ -1,5 +1,5 @@
 // src/app/routes/not-found-page.tsx
-import {useNavigate, Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();

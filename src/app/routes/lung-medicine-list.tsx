@@ -1,4 +1,4 @@
-// src/app/routes/lung-medicine-list-page.tsx
+// src/app/routes/lung-medicine-list.tsx
 import {useEffect, useRef, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
 import {fetchLungMedicines} from "@entities/listing/api/lung-medicine";
@@ -6,7 +6,7 @@ import type {LungMedicineListResponse} from "@entities/listing/model/types";
 import Pagination from "@shared/ui/pagination";
 
 import {useMedia} from "@shared/hooks/use-media";
-import {DEFAULT_PAGE_SIZE_DESKTOP, DEFAULT_PAGE_SIZE_MOBILE, BASE_PAGE_SIZE} from "@shared/config/pagination";
+import {BASE_PAGE_SIZE, DEFAULT_PAGE_SIZE_DESKTOP, DEFAULT_PAGE_SIZE_MOBILE} from "@shared/config/pagination";
 import {useIntQueryParam} from "@shared/hooks/use-page-param";
 import {useAsync} from "@shared/hooks/use-async";
 
@@ -14,12 +14,13 @@ import {useScrollToTop} from "@shared/hooks/use-scroll-to-top";
 import {useResetPageOnChange} from "@shared/hooks/use-reset-page-on-change";
 import {usePaginationGo} from "@shared/hooks/use-pagination-go";
 
+import ListCard from "@shared/ui/list-card";
 import AdSlot from "@shared/ui/ad-slot";
 import {getDefaultSearchFields, type SearchFieldOf} from "@shared/api/common-code/static";
 
 type SearchField = SearchFieldOf<"lung-medicine">;
 
-export default function LungMedicineListPage() {
+export default function LungMedicineList() {
   const isMobile = useMedia(BASE_PAGE_SIZE);
   const PAGE_SIZE = isMobile ? DEFAULT_PAGE_SIZE_MOBILE : DEFAULT_PAGE_SIZE_DESKTOP;
 
@@ -153,15 +154,19 @@ export default function LungMedicineListPage() {
           <div className="row g-2 row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-6">
             {data.contents.map((item) => (
               <div key={item.id} className="col">
-                <div className="card h-100">
-                  <div className="card-body text-start d-flex flex-column">
-                    <h6 className="card-title fw-semibold mb-2">{item.installationPlaceName}</h6>
-                    <p className="card-text text-muted small mb-3">{item.roadAddress}</p>
-                    <Link to={`/lung-medicine/${item.id}`} className="btn btn-primary mt-auto">
-                      상세
-                    </Link>
-                  </div>
-                </div>
+                <ListCard
+                  className="card-hover"
+                  title={item.installationPlaceName}
+                  description={item.roadAddress}
+                >
+                  <Link
+                    to={`/lung-medicine/${item.id}`}
+                    className="btn btn-primary w-100"
+                    aria-label={`${item.installationPlaceName} 상세로 이동`}
+                  >
+                    상세
+                  </Link>
+                </ListCard>
               </div>
             ))}
             {data.contents.length === 0 && (

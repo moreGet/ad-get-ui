@@ -1,7 +1,7 @@
 // src/shared/ui/breadcrumbs.tsx
-import {useMemo} from "react";
-import {Link, useMatches, type UIMatch} from "react-router-dom";
 import type React from "react";
+import {useMemo} from "react";
+import {Link, type UIMatch, useMatches} from "react-router-dom";
 
 type Crumb = { label: React.ReactNode; to?: string; active?: boolean };
 

@@ -2,7 +2,7 @@
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import AppLayout from '@app/layout/app-layout';
 
-import {TEXT, ROUTES} from "@shared/constants/text";
+import {ROUTES, TEXT} from "@shared/constants/text";
 
 const router = createBrowserRouter([
   {
@@ -13,16 +13,16 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () => import('@app/routes/home-page').then(m => ({Component: m.default})),
+        lazy: () => import('@app/routes/home').then(m => ({Component: m.default})),
       },
       {
         path: ROUTES.lungMedicineList,
         handle: {breadcrumb: () => TEXT.lungMedicine.title},
-        lazy: () => import('@app/routes/lung-medicine-list-page').then(m => ({Component: m.default})),
+        lazy: () => import('@app/routes/lung-medicine-list').then(m => ({Component: m.default})),
       },
       {
         path: ROUTES.lungMedicineDetail,
-        lazy: () => import('@app/routes/lung-medicine-detail-page').then(m => ({Component: m.default})),
+        lazy: () => import('@app/routes/lung-medicine-detail').then(m => ({Component: m.default})),
       },
       {
         path: '*',

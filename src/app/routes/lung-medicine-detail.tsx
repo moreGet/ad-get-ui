@@ -1,4 +1,4 @@
-// src/app/routes/lung-medicine-detail-page.tsx
+// src/app/routes/lung-medicine-detail.tsx
 import {Navigate, useParams} from "react-router-dom";
 import {useAsync} from "@shared/hooks/use-async";
 import {parseRouteInt} from "@shared/utils/parse-utils";
@@ -7,12 +7,12 @@ import type {LungMedicineDetail} from "@entities/listing/model/types";
 
 import AdSlot from "@shared/ui/ad-slot";
 import Breadcrumbs from "@shared/ui/breadcrumbs";
-import {SectionHeader, Field} from "@shared/ui/helpers";
+import {Field, SectionHeader} from "@shared/ui/helpers";
 
 import NaverMap from "@shared/providers/naver/dynamic-map";
 import NaverPanorama from "@shared/providers/naver/panorama";
 
-export default function LungMedicineDetailPage() {
+export default function LungMedicineDetail() {
   const {id: routeId} = useParams();
   const id = parseRouteInt(routeId);
 

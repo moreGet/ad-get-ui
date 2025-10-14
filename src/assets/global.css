@@ -51,7 +51,6 @@
 }
 
 /* 기본: ~16px */
-
 @media (max-width: 360px) {
     .navbar .navbar-toggler {
         font-size: 1.0625rem;
@@ -97,4 +96,186 @@
 /* 라벨에 약간의 자간 */
 .label-xs {
     letter-spacing: .03em;
+}
+
+/* 트렌디 카드 호버: 살짝 떠오르고, 그림자 깊어지고, 테두리 글로우 + 이미지 미세 확대 */
+.card-hover {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--bs-body-bg);
+    border: 1px solid rgba(var(--bs-emphasis-color-rgb), .08);
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1),
+    box-shadow .35s cubic-bezier(.2, .8, .2, 1),
+    border-color .35s,
+    background .35s;
+    will-change: transform;
+}
+
+/* 부드러운 글로우 테두리 */
+.card-hover::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .35s;
+    background: radial-gradient(60% 60% at 30% 10%, rgba(var(--bs-primary-rgb), .28), transparent 60%),
+    radial-gradient(60% 60% at 80% 80%, rgba(99, 102, 241, .25), transparent 60%);
+    mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 1px; /* “빛나는” 가장자리 */
+}
+
+/* 이미지가 카드 안에 있을 때 미세 확대 */
+.card-hover img,
+.card-hover .card-img,
+.card-hover .card-img-top {
+    transition: transform .6s cubic-bezier(.2, .8, .2, 1);
+    will-change: transform;
+}
+
+/* hover 상태 */
+.card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px -16px rgba(0, 0, 0, .35);
+    border-color: rgba(var(--bs-primary-rgb), .45);
+}
+
+.card-hover:hover::before {
+    opacity: 1;
+}
+
+.card-hover:hover img,
+.card-hover:hover .card-img,
+.card-hover:hover .card-img-top {
+    transform: scale(1.035);
+}
+
+/* 키보드 포커스 접근성 */
+.card-hover:focus-visible {
+    outline: 3px solid rgba(var(--bs-primary-rgb), .6);
+    outline-offset: 2px;
+}
+
+/* 클릭 시 살짝 누르는 느낌 */
+.card-hover:active {
+    transform: translateY(-2px) scale(.995);
+}
+
+/* 모션 최소화 선호 사용자 */
+@media (prefers-reduced-motion: reduce) {
+    .card-hover, .card-hover * {
+        transition: none !important;
+    }
+}
+
+/* ===== Navbar: 아래쪽 직사각형 언더라인 ===== */
+.navlink-underline {
+    --ul-inset-x: .5rem; /* 좌우 여백 */
+    --ul-offset-y: .35rem; /* 아래로부터 거리 */
+    --ul-thickness: 2px; /* 선 두께 */
+    position: relative;
+    transition: color .25s ease;
+}
+
+/* 아래쪽만, 단색 직사각형 */
+.navlink-underline::after {
+    content: "";
+    position: absolute;
+    left: var(--ul-inset-x);
+    right: var(--ul-inset-x);
+    bottom: var(--ul-offset-y);
+    height: var(--ul-thickness);
+    background: var(--bs-primary); /* 단색 */
+    transform: scaleX(0); /* 중앙에서 펼쳐짐 */
+    transform-origin: center;
+    transition: transform .25s cubic-bezier(.2, .8, .2, 1);
+    pointer-events: none;
+}
+
+/* hover/focus 시 색상 & 밑줄 표시 */
+.navlink-underline:hover,
+.navlink-underline:focus {
+    color: var(--bs-primary);
+}
+
+.navlink-underline:hover::after,
+.navlink-underline:focus::after {
+    transform: scaleX(1);
+}
+
+/* 활성(현재 라우트) 상태도 항상 표시 */
+.nav-link.active.navlink-underline,
+button.active.navlink-underline {
+    color: var(--bs-primary);
+}
+
+.nav-link.active.navlink-underline::after,
+button.active.navlink-underline::after {
+    transform: scaleX(1);
+}
+
+/* 모션 최소화 선호 사용자 */
+@media (prefers-reduced-motion: reduce) {
+    .navlink-underline,
+    .navlink-underline::after {
+        transition: none !important;
+    }
+}
+
+/* Dropdown: 위 → 아래 스르륵(팝퍼 유지, transform 미사용) */
+.dropdown-menu.dropdown-animate {
+    display: block; /* 초기 레이아웃 확보 */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    margin-top: -12px; /* ↑ 시작을 살짝 위로 */
+    transition: opacity .28s cubic-bezier(.16, 1, .3, 1),
+    margin-top .28s cubic-bezier(.16, 1, .3, 1);
+    will-change: opacity, margin-top;
+}
+
+.dropdown-menu.dropdown-animate.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    margin-top: 0; /* 제자리로 ↓ */
+}
+
+/* 방향별 보정 */
+.dropup .dropdown-menu.dropdown-animate {
+    margin-top: 0;
+    margin-bottom: -12px; /* 아래에서 위로 올라오게 */
+}
+
+.dropup .dropdown-menu.dropdown-animate.show {
+    margin-bottom: 0;
+}
+
+.dropend .dropdown-menu.dropdown-animate {
+    margin-left: -12px; /* 왼쪽에서 오른쪽으로 */
+}
+
+.dropend .dropdown-menu.dropdown-animate.show {
+    margin-left: 0;
+}
+
+.dropstart .dropdown-menu.dropdown-animate {
+    margin-right: -12px; /* 오른쪽에서 왼쪽으로 */
+}
+
+.dropstart .dropdown-menu.dropdown-animate.show {
+    margin-right: 0;
+}
+
+/* 모션 최소화 환경 배려 */
+@media (prefers-reduced-motion: reduce) {
+    .dropdown-menu.dropdown-animate {
+        transition: none !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+    }
 }

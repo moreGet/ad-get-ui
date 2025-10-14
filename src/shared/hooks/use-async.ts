@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState, type DependencyList} from "react";
+import {type DependencyList, useEffect, useRef, useState} from "react";
 
 type Options<T> = {
   // true면 마운트 시 자동실행
