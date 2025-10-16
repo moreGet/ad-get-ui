@@ -11,6 +11,15 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       },
+      '/sitemap.xml': {
+        target: 'http://localhost:9080',
+        changeOrigin: true,
+        // rewrite 없음: 경로 그대로 전달
+      },
+      '/sitemap': {
+        target: 'http://localhost:9080',
+        changeOrigin: true,
+      },
     },
   },
 });
