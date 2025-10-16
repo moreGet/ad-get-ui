@@ -1,11 +1,23 @@
 import {Link, NavLink} from "react-router-dom";
 import {ROUTES, TEXT} from "@shared/constants/text";
+import title from "@assets/logo/title.png";
 
 export default function Navbar() {
   return (
-    <nav className="navbar navbar-expand-md bg-white border-bottom sticky-top">
+    <nav className="navbar navbar-expand-md bg-white border-bottom sticky-top py-1">
+
       <div className="container-xxl">
-        <Link className="navbar-brand fw-bold" to="/">열린데이터 마루</Link>
+        <Link className="navbar-brand fw-bold d-flex align-items-center py-0" to="/">
+          <span className="brand-wrap">
+            <img
+              src={title}
+              alt="열린데이터 마루"
+              className="me-5"
+              loading="eager"
+              decoding="async"
+            />
+          </span>
+        </Link>
 
         <button
           className="navbar-toggler px-3 py-2"
@@ -20,7 +32,7 @@ export default function Navbar() {
         </button>
 
         <div id="gnb" className="collapse navbar-collapse">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav ms-auto">
             {/* 홈: 그대로 */}
             <li className="nav-item">
               <NavLink to={ROUTES.home} end className="nav-link navlink-underline">홈</NavLink>
