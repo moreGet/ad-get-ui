@@ -16,6 +16,9 @@ export const ROUTES = {
   home: "/",
   lungMedicineList: "/lung-medicine/list",
   lungMedicineDetail: "/lung-medicine/:id",
+  terms: "/terms",
+  contact: "/contact",
+  copyright: "/copyright"
 } as const;
 
 // 타입이 필요하면 이렇게 꺼내 쓸 수 있음

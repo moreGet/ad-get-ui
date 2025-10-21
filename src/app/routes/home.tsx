@@ -2,7 +2,8 @@
 import DashboardCard from "@shared/ui/dashboard-card";
 import AdSlot from "@shared/ui/ad-slot";
 import {ROUTES, TEXT} from "@shared/constants/text";
-// import lungIcon from "@app/assets/react.svg"; // 샘플 아이콘(원하면 다른 이미지로 교체)
+import lungImg from "@assets/lung-medicine-img.png";
+import lungAmiImg from "@assets/lung-medicine-ami-img.gif";
 
 export default function Home() {
   return (
@@ -20,7 +21,8 @@ export default function Home() {
               to={ROUTES.lungMedicineList}
               title={TEXT.lungMedicine.title}
               description={TEXT.lungMedicine.description}
-              imgAlt={TEXT.lungMedicine.title}
+              imgSrc={lungImg}
+              amiImgSrc={lungAmiImg}
             />
           </div>
           <div className="col">

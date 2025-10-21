@@ -9,12 +9,7 @@ type ListCardProps = {
   className?: string;
 };
 
-export default function ListCard({
-                                   title,
-                                   description,
-                                   children,
-                                   className,
-                                 }: ListCardProps) {
+export default function ListCard({title, description, children, className}: ListCardProps) {
   return (
     <div className={`card h-100 ${className ?? ""}`}>
       <div className="card-body text-start d-flex flex-column">

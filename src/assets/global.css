@@ -8,6 +8,10 @@
     --rail-w: 150px;
     /* 중앙 컨텐츠 최대폭 */
     --content-max-w: 1200px;
+    /* 리스트 카드 */
+    --thumb-size-sm: 56px;
+    --thumb-size-md: 72px;
+    --thumb-size-lg: 96px;
 }
 
 /* ===== Rails (sides) ===== */
@@ -277,5 +281,235 @@ button.active.navlink-underline::after {
 
     .navlink-underline, .navlink-underline::after {
         transition: none !important;
+    }
+}
+
+/* ===== Thumbnail (simplified) ===== */
+.thumb {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    background: var(--bs-light, #f8f9fa);
+    border-radius: .375rem;
+    flex-shrink: 0;
+}
+
+.thumb__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity .15s linear;
+}
+
+/* 초기: 정지 이미지 표시, 애니메이션은 숨김 */
+.thumb__img--still {
+    opacity: 1;
+}
+
+.thumb__img--anim {
+    opacity: 0;
+}
+
+/* hover 시 애니메이션 표시 */
+.card:hover .thumb__img--anim,
+.card:focus-within .thumb__img--anim {
+    opacity: 1;
+}
+
+.card:hover .thumb__img--still,
+.card:focus-within .thumb__img--still {
+    opacity: 0;
+}
+
+footer {
+    background: var(--bs-body-bg);
+}
+
+footer .nav-link {
+    color: var(--bs-secondary-color);
+    font-size: 1.0rem;
+}
+
+footer .nav-link:hover {
+    color: var(--bs-primary);
+    text-decoration: underline;
+}
+
+.footer-text-sm {
+    font-size: 1.0rem; /* 14px */
+    color: var(--bs-secondary-color, #6c757d);
+}
+
+/* Terms 전용 히어로(타이틀) */
+.terms-hero {
+    padding-block: .5rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+}
+
+/* 로고(타이틀) 이미지: 반응형 높이 고정, 비율 유지 */
+.brand-title {
+    display: block;
+    height: clamp(100px, 0vw, 100px); /* 화면 크기에 따라 32~48px */
+    width: auto; /* 비율 유지 */
+    margin-inline: auto; /* 가로 중앙 */
+}
+
+/* 본문 폭 제한(이미 가지고 있으면 유지) */
+.content-narrow {
+    max-width: 720px;
+}
+
+/* 섹션 간격 보강(이미 있으면 스킵 가능) */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    margin-bottom: .5rem;
+}
+
+/* 좁은 본문 폭 컨테이너 */
+.content-narrow {
+    max-width: 720px;
+}
+
+/* 한국식 불릿 리스트 */
+.k-bullets {
+    padding-left: 0;
+    margin: 0;
+}
+
+.k-bullets li {
+    list-style: none;
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: .375rem;
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: .875rem; /* small */
+}
+
+.k-bullets--dash li::before {
+    content: "–"; /* 긴 대시 */
+    position: absolute;
+    left: 0;
+}
+
+.k-bullets--circle li::before {
+    content: "ㅇ"; /* 동그라미 표기 */
+    position: absolute;
+    left: 0;
+}
+
+/* 제목들 간격 */
+.section-title {
+    margin-bottom: .5rem;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+/* ===== Reveal (subtle, trendy) ===== */
+.reveal-base {
+    opacity: 0;
+    transform: translateY(8px);
+    will-change: opacity, transform;
+    transition: opacity .48s cubic-bezier(.22, .61, .36, 1),
+    transform .48s cubic-bezier(.22, .61, .36, 1);
+}
+
+.reveal-hero { /* 로고/히어로 */
+    opacity: 0;
+    transform: translateY(6px) scale(0.995);
+    transition: opacity .5s cubic-bezier(.22, .61, .36, 1),
+    transform .6s cubic-bezier(.22, .61, .36, 1);
+}
+
+.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* 리스트 항목 순차 등장(스태거) */
+.reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .44s cubic-bezier(.22, .61, .36, 1),
+    transform .44s cubic-bezier(.22, .61, .36, 1);
+}
+
+.reveal-stagger.is-visible > * {
+    opacity: 1;
+    transform: none;
+}
+
+/* 간단한 딜레이: nth-child로 6개까지 커버 (필요 시 확장) */
+.reveal-stagger.is-visible > *:nth-child(1) {
+    transition-delay: .02s;
+}
+
+.reveal-stagger.is-visible > *:nth-child(2) {
+    transition-delay: .06s;
+}
+
+.reveal-stagger.is-visible > *:nth-child(3) {
+    transition-delay: .10s;
+}
+
+.reveal-stagger.is-visible > *:nth-child(4) {
+    transition-delay: .14s;
+}
+
+.reveal-stagger.is-visible > *:nth-child(5) {
+    transition-delay: .18s;
+}
+
+.reveal-stagger.is-visible > *:nth-child(6) {
+    transition-delay: .22s;
+}
+
+/* 모션 줄이기: 전환 제거하고 즉시 표시 */
+@media (prefers-reduced-motion: reduce) {
+    .reveal-base,
+    .reveal-hero,
+    .reveal-stagger > * {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* ===== Sequential Reveal (한 줄 순차 등장) ===== */
+[data-reveal] {
+    --reveal-delay: 0s; /* 기본값 선언 */
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .48s cubic-bezier(.22, .61, .36, 1),
+    transform .48s cubic-bezier(.22, .61, .36, 1);
+    transition-delay: var(--reveal-delay);
+}
+
+/* 히어로(로고)는 살짝만 */
+[data-reveal="hero"] {
+    transform: translateY(6px) scale(.995);
+    transition: opacity .5s cubic-bezier(.22, .61, .36, 1),
+    transform .6s cubic-bezier(.22, .61, .36, 1);
+}
+
+/* 컨테이너에 플래그가 붙으면 모두 재생 */
+.is-revealing [data-reveal] {
+    opacity: 1;
+    transform: none;
+}
+
+/* 모션 줄이기: 즉시 표시 */
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
     }
 }

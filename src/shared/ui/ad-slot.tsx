@@ -5,7 +5,7 @@ type Props = {
   label?: string;
 };
 
-export default function AdSlot({height = 80, className = "", label = "광고"}: Props) {
+export default function AdSlot({height = 65, className = "", label = ""}: Props) {
   return (
     <div
       className={`bg-light border rounded d-flex align-items-center justify-content-center text-secondary ${className}`}

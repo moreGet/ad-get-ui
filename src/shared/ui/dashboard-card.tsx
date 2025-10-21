@@ -2,11 +2,12 @@
 import {Link} from "react-router-dom";
 
 type DashboardCardProps = {
-  to: string;              // 라우팅 경로 (예: "/lung-medicine")
-  title: string;           // 카드 타이틀
-  description?: string;    // 선택 설명
-  imgSrc?: string;         // 왼쪽 이미지 (선택)
-  imgAlt?: string;         // 이미지 대체 텍스트
+  to: string;
+  title: string;
+  description?: string;
+  imgSrc?: string;     // 정지 이미지
+  amiImgSrc?: string;  // 애니메이션 이미지 (GIF/APNG 등)
+  imgAlt?: string;
 };
 
 export default function DashboardCard({
@@ -14,19 +15,34 @@ export default function DashboardCard({
                                         title,
                                         description,
                                         imgSrc,
+                                        amiImgSrc,
                                         imgAlt,
                                       }: DashboardCardProps) {
   return (
     <div className="card card-hover h-100 shadow-sm position-relative">
       <div className="card-body d-flex align-items-center gap-3">
-        {/* 왼쪽 이미지 영역 */}
-        {imgSrc ? (
-          <img
-            src={imgSrc}
-            alt={imgAlt ?? ""}
-            className="rounded object-fit-cover flex-shrink-0"
-            style={{width: 72, height: 72}}
-          />
+        {(imgSrc || amiImgSrc) ? (
+          <div className="thumb">
+            {imgSrc && (
+              <img
+                src={imgSrc}
+                alt={imgAlt ?? ""}
+                loading="lazy"
+                decoding="async"
+                className="thumb__img thumb__img--still"
+              />
+            )}
+            {amiImgSrc && (
+              <img
+                src={amiImgSrc}
+                alt={imgAlt ?? ""}
+                aria-hidden={!!imgSrc}
+                loading="lazy"
+                decoding="async"
+                className="thumb__img thumb__img--anim"
+              />
+            )}
+          </div>
         ) : (
           <div
             className="bg-light rounded d-flex align-items-center justify-content-center text-muted flex-shrink-0"
@@ -37,7 +53,6 @@ export default function DashboardCard({
           </div>
         )}
 
-        {/* 오른쪽 텍스트 영역 */}
         <div className="text-start">
           <h5 className="card-title mb-1">{title}</h5>
           {description && (
@@ -46,7 +61,6 @@ export default function DashboardCard({
         </div>
       </div>
 
-      {/* 카드 전체를 클릭 가능하게 */}
       <Link to={to} className="stretched-link" aria-label={`${title}로 이동`}/>
     </div>
   );
