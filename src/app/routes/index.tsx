@@ -29,14 +29,6 @@ const router = createBrowserRouter([
         lazy: () => import('@app/routes/terms').then(m => ({Component: m.default})),
       },
       {
-        path: ROUTES.contact,
-        lazy: () => import('@app/routes/contact').then(m => ({Component: m.default})),
-      },
-      {
-        path: ROUTES.copyright,
-        lazy: () => import('@app/routes/copyright').then(m => ({Component: m.default})),
-      },
-      {
         path: '*',
         lazy: () => import('@app/routes/not-found-page').then(m => ({Component: m.default})),
       },

@@ -69,13 +69,35 @@ export default function Terms() {
         {/* 2 */}
         <section className="section" data-reveal>
           <h2 className="h6 fw-bold section-title">2. 데이터 및 저작권</h2>
+
+          {/* 공공데이터 및 2차저작물 */}
           <ul className="k-bullets k-bullets--dash" data-reveal>
             <li>원본 데이터의 저작권과 권리는 각 공공데이터 제공 기관에 귀속됩니다.</li>
-            <li>본 사이트는 원본 데이터를 가공·정리·시각화하여 제공합니다.</li>
+            <li>본 사이트는 공공데이터를 가공·정리·시각화하여 제공합니다.</li>
             <li>사이트 내 UI/디자인/코드 및 시각화 결과 등 2차 저작물의 권리는 운영자에게 귀속됩니다.</li>
           </ul>
           <ul className="k-bullets k-bullets--circle mt-2" data-reveal>
             <li>데이터 재이용 시에는 반드시 원 데이터 제공 기관의 이용정책을 준수해야 합니다.</li>
+          </ul>
+
+          {/* 아이콘/그래픽 리소스 고지 (추가) */}
+          <ul className="k-bullets k-bullets--dash mt-3" data-reveal>
+            <li>본 사이트에서 사용하는 <strong>아이콘/그래픽 일부는 외부 리소스 라이선스</strong>를 따릅니다.</li>
+            <li>
+              특히 일부 리소스는 <strong>Freepik</strong> 제공분을 사용합니다.
+              <br/>
+              출처 : {' '}
+              <a
+                href="https://www.freepik.com"
+                target="_blank"
+                rel="noreferrer"
+                className="badge rounded-pill border fw-medium badge-soft badge-click text-decoration-none"
+                title="Freepik 공식 사이트로 이동"
+              >
+                Designed by <span className="brand-link">Freepik</span> ↗
+              </a>
+            </li>
+            <li>외부 리소스의 사용·재배포·2차 가공 시에는 각 제공처의 라이선스 및 이용정책을 따라야 합니다.</li>
           </ul>
         </section>
 

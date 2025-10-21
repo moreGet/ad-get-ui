@@ -513,3 +513,68 @@ footer .nav-link:hover {
         transform: none !important;
     }
 }
+
+/* ===== Modal Overlay & Card ===== */
+.modal-overlay-blur {
+    background: rgba(18, 18, 18, .42);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
+}
+
+.modal-card {
+    width: min(560px, 92vw);
+}
+
+.modal-card-lg {
+    width: min(640px, 92vw);
+}
+
+/* ===== Badges / Chips ===== */
+.badge-click {
+    padding: 6px 10px;
+    color: #2b2f36;
+}
+
+.badge-soft {
+    background: #f7f7f8 !important;
+    border: 1px solid #e5e6e8 !important;
+    color: #2b2f36 !important;
+}
+
+.mono-chip {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: .9rem;
+    background: #f7f7f8;
+    border: 1px solid #e5e6e8;
+    border-radius: 8px;
+    padding: 6px 10px;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+/* ===== Brand / Link Tone ===== */
+.brand-link {
+    color: #2c3e50;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ===== Icon Box (Large) ===== */
+.icon-box-lg {
+    width: 56px;
+    height: 56px;
+    background: #f4f5f7;
+    border: 1px solid #e7e8ea;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Title Divider ===== */
+.title-divider {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    opacity: .25;
+}
