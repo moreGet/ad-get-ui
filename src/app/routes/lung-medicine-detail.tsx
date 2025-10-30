@@ -5,6 +5,8 @@ import {parseRouteInt} from "@shared/utils/parse-utils";
 import {fetchLungMedicine} from "@entities/listing/api/lung-medicine";
 import type {LungMedicineDetail} from "@entities/listing/model/types";
 
+import {ROUTES} from "@shared/constants/text";
+
 import AdSlot from "@shared/ui/ad-slot";
 import Breadcrumbs from "@shared/ui/breadcrumbs";
 import {Field, SectionHeader} from "@shared/ui/helpers";
@@ -27,7 +29,7 @@ export default function LungMedicineDetail() {
   }
 
   const crumbs = [
-    {label: "(폐)의약품 수거함", to: "/lung-medicine/list"},
+    {label: "(폐)의약품 수거함", to: ROUTES.lungMedicineList},
     {label: loading ? "상세" : data?.installationPlaceName ?? "상세", active: true},
   ];
 
@@ -181,8 +183,19 @@ export default function LungMedicineDetail() {
           )}
         </div>
       </div>
+
       {/* 광고 */}
       <AdSlot height={80}/>
+
+      <div className="card">
+        <div className="card-body">
+          <Field label="데이터 갱신일">
+            { TODO }
+            {/*${Date.now().pa}*/}
+          </Field>
+        </div>
+      </div>
+
     </div>
   );
 }
