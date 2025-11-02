@@ -15,7 +15,7 @@ import NaverMap from "@shared/providers/naver/dynamic-map";
 import NaverPanorama from "@shared/providers/naver/panorama";
 
 import SEO from "@shared/ui/seo/seo";
-import {buildLungMedicineSeoProps} from "@shared/seo/mappers/lung-medicine-mapper";
+import {buildLungMedicineSeoProps} from "@shared/seo/mappers/lung-medicine-mapper.ts";
 
 import {formatUtcToKst} from "@shared/utils/date";
 
@@ -42,7 +42,7 @@ export default function LungMedicineDetail() {
 
   return (
     <div className="container py-3 d-flex flex-column gap-3">
-      {/* SEO: 데이터 준비되면 메타/OG/JSON-LD 주입 */}
+      {/* 데이터 메타 (완성) */}
       {!loading && data && (
         <SEO
           {...buildLungMedicineSeoProps(data, {
@@ -50,11 +50,6 @@ export default function LungMedicineDetail() {
             ogImage: SITE_URL ? `${SITE_URL}/og/default.png` : undefined,
             siteName: "AD-GET",
             robots: "index,follow",
-            // includeJsonLd: false, // 필요 없으면 주석 해제
-            // hreflangs: [
-            //   { href: `${SITE_URL}/lung-medicine/${data.id}`, lang: "ko" },
-            //   { href: `${SITE_URL}/en/lung-medicine/${data.id}`, lang: "en" },
-            // ],
           })}
         />
       )}

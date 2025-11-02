@@ -7,10 +7,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import '@assets/global.css';
 import {HelmetProvider} from "react-helmet-async";
 
+// 메타태그 확인시 스트릭 모드 끄기
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <HelmetProvider>
+  <HelmetProvider>
+    <React.StrictMode>
       <AppRoutes/>
-    </HelmetProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </HelmetProvider>
 )

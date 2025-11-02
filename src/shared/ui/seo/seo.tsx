@@ -96,7 +96,7 @@ export default function SEO(props: SEOProps) {
   const _twImg = twitterImage ?? ogImage;
 
   return (
-    <Helmet>
+    <Helmet defer={false}>
       {/* === 기본 SEO === */}
       {_title && <title>{_title}</title>}
       {_desc && <meta name="description" content={_desc}/>}
