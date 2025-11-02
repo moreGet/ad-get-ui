@@ -14,6 +14,8 @@ import {Field, SectionHeader} from "@shared/ui/helpers";
 import NaverMap from "@shared/providers/naver/dynamic-map";
 import NaverPanorama from "@shared/providers/naver/panorama";
 
+import {formatUtcToKst} from "@shared/utils/date";
+
 export default function LungMedicineDetail() {
   const {id: routeId} = useParams();
   const id = parseRouteInt(routeId);
@@ -190,8 +192,7 @@ export default function LungMedicineDetail() {
       <div className="card">
         <div className="card-body">
           <Field label="데이터 갱신일">
-            { TODO }
-            {/*${Date.now().pa}*/}
+            {formatUtcToKst(data?.updatedAt, {withSeconds: true, includeZone: false})}
           </Field>
         </div>
       </div>
