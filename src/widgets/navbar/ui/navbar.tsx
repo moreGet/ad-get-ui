@@ -35,7 +35,7 @@ export default function Navbar() {
           <ul className="navbar-nav ms-auto">
             {/* 홈: 그대로 */}
             <li className="nav-item">
-              <NavLink to={ROUTES.home} end className="nav-link navlink-underline">홈</NavLink>
+              <NavLink to={ROUTES.home} end className="nav-link navlink-underline">{TEXT.nav.home}</NavLink>
             </li>
 
             {/* 약국/의료 드롭다운 */}
@@ -47,7 +47,7 @@ export default function Navbar() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                의료/약국
+                {TEXT.nav.medical}
               </button>
 
               <ul className="dropdown-menu dropdown-animate border-1 rounded-4 p-2" aria-labelledby="navbarPharmacy">

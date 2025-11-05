@@ -2,7 +2,7 @@
 export const TEXT = {
   nav: {
     home: "홈",
-    lungMedicine: "(폐)의약품 수거함",
+    medical: "병원/약국",
   },
   lungMedicine: {
     title: "(폐)의약품 수거함",
